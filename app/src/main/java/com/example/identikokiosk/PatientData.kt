@@ -1,5 +1,6 @@
 package com.example.identikokiosk
 
+import java.io.Serializable
 import com.google.gson.annotations.SerializedName
 
 data class PatientData(

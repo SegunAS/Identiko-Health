@@ -4,6 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.LinearLayout
 import android.widget.TextView
+import com.example.identikokiosk.R
+import com.example.identikokiosk.data.model.PatientData
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 
