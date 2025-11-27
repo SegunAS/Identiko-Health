@@ -26,6 +26,19 @@ class ScanActivity : AppCompatActivity(), NfcAdapter.ReaderCallback {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_scan)
 
+        val scanButton = findViewById(R.id.btn_action_scan)
+
+        scanButton.setOnClickListener{
+            val intent = Intent(this, MainActivity::class.java)
+
+            intent.putExtra("HOLDER_NAME", "Demo User")
+            intent.putExtra("CARD_ID", "MANUAL-BYPASS-01")
+
+            startActivity(intent)
+        }
+
+
+
         // Kiosk Mode: Hide System Bars
         window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_FULLSCREEN)
 

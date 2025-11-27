@@ -27,6 +27,7 @@
             app:tint="@color/white"/>
 
         <LinearLayout
+            android:id="@+id/layout_card_bg"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

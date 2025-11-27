@@ -36,12 +36,12 @@ class DashboardActivity : AppCompatActivity() {
     }
 
     private fun setupCard(includeId: Int, title: String, subtitle: String, colorResId: Int) {
-        val card = findViewById<LinearLayout>(includeId)
-        val bgLayout = card.findViewById<LinearLayout>(R.id.card_background)
+       val row = findViewById<androidx.cardview.widget.CardView>(includeId)
+        val bgView = card.findViewById<LinearLayout>(R.id.layout_card_bg)
 
-        bgLayout.setBackgroundColor(ContextCompat.getColor(this, colorResId))
+        bgView.setBackgroundColor(ContextCompat.getColor(this, colorResId))
 
-        card.findViewById<TextView>(R.id.tv_card_title).text = title
-        card.findViewById<TextView>(R.id.tv_card_subtitle).text = subtitle
+        row.findViewById<TextView>(R.id.tv_card_title).text = title
+        row.findViewById<TextView>(R.id.tv_card_subtitle).text = subtitle
     }
 }
