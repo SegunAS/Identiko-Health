@@ -1,0 +1,78 @@
+package com.example.identikokiosk
+
+import android.graphics.Color
+import android.os.Bundle
+import android.view.Gravity
+import android.widget.LinearLayout
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+
+class BasicInfoActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_basic_info)
+
+        // 1. Setup Header
+        setupHeader("Basic Information", "Patient's essential details", R.color.brand_blue)
+
+        // 2. Get Data
+        val patient = intent.getSerializableExtra("PATIENT") as? PatientData ?: return
+
+        // 3. Populate Rows (Only if data exists)
+        val container = findViewById<LinearLayout>(R.id.info_container)
+
+        addRow(container, "Name", patient.name)
+        addRow(container, "Date of Birth", patient.dateOfBirth)
+        addRow(container, "Blood Group", patient.bloodGroup, isRed = true) // Highlight red like image
+        addRow(container, "Genotype", patient.genotype)
+        addRow(container, "Sex", patient.sex)
+        addRow(container, "Height", "${patient.height} cm")
+        
+        // Handle List -> String
+        val disab = if(patient.disabilities.isEmpty()) "None" else patient.disabilities.joinToString(", ")
+        addRow(container, "Disabilities", disab)
+    }
+
+    private fun addRow(container: LinearLayout, label: String, value: String?, isRed: Boolean = false) {
+        if (value.isNullOrEmpty()) return // RULE: Do not add if empty
+
+        val row = LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            setPadding(0, 24, 0, 24)
+        }
+
+        val labelView = TextView(this).apply {
+            text = label
+            textSize = 18f
+            setTextColor(Color.parseColor("#666666"))
+            layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
+        }
+
+        val valueView = TextView(this).apply {
+            text = value
+            textSize = 18f
+            setTextColor(if (isRed) Color.RED else Color.BLACK)
+            textAlignment = TextView.TEXT_ALIGNMENT_VIEW_END
+            setTypeface(null, android.graphics.Typeface.BOLD)
+            layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
+        }
+
+        row.addView(labelView)
+        row.addView(valueView)
+        container.addView(row)
+        
+        // Add divider line
+        val divider = android.view.View(this).apply {
+            layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 2)
+            setBackgroundColor(Color.parseColor("#EEEEEE"))
+        }
+        container.addView(divider)
+    }
+
+    private fun setupHeader(title: String, subtitle: String, colorRes: Int) {
+        findViewById<LinearLayout>(R.id.header_container).setBackgroundResource(colorRes)
+        findViewById<TextView>(R.id.tv_header_title).text = title
+        findViewById<TextView>(R.id.tv_header_subtitle).text = subtitle
+        findViewById<LinearLayout>(R.id.btn_back).setOnClickListener { finish() }
+    }
+}

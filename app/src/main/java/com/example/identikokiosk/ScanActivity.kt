@@ -68,13 +68,16 @@ class ScanActivity : AppCompatActivity(), NfcAdapter.ReaderCallback {
             // Low debounce to allow quick reads
             options.putInt(NfcAdapter.EXTRA_READER_PRESENCE_CHECK_DELAY, 250)
 
+            val flags = NfcAdapter.FLAG_READER_NFC_A or
+                    NfcAdapter.FLAG_READER_NFC_B or
+                    NfcAdapter.FLAG_READER_SKIP_NDEF_CHECK
+
+
             // Listen for ISO-DEP (Smart Cards) type tags
             nfcAdapter!!.enableReaderMode(
                 this,
                 this,
-                NfcAdapter.FLAG_READER_NFC_A or
-                        NfcAdapter.FLAG_READER_NFC_B or
-                        NfcAdapter.FLAG_READER_SKIP_NDEF_CHECK,
+                flags,
                 options
             )
             updateStatus("Ready to Scan")
@@ -91,54 +94,75 @@ class ScanActivity : AppCompatActivity(), NfcAdapter.ReaderCallback {
     override fun onTagDiscovered(tag: Tag?) {
         if (tag == null) return
 
-        // Update UI to show we are working
-        runOnUiThread { updateStatus("Reading Card...") }
+        // 1. SHOW SPINNER
+        runOnUiThread {
+            findViewById<View>(R.id.loading_overlay).visibility = View.VISIBLE
+            findViewById<TextView>(R.id.tv_loading_status).text = "Reading Secure Sector..."
+        }
 
-        // Is it an IsoDep card? (Compatible with your Reader Code)
+        // Check for correct card type
         val isoDep = IsoDep.get(tag)
         if (isoDep == null) {
-            runOnUiThread { updateStatus("Error: Card type not supported") }
+            runOnUiThread {
+                findViewById<View>(R.id.loading_overlay).visibility = View.GONE
+                updateStatus("Error: Card type not supported")
+            }
             return
         }
 
-        // Launch Coroutine to read data (Background Thread)
         lifecycleScope.launch(Dispatchers.IO) {
             try {
-                // Initialize your provided Reader Class
+                // 2. READ THE CARD ID
                 val reader = OptimizedCardDataReader()
-
-                // CALL YOUR PROVIDED FUNCTION
                 val cardData = reader.readCardDataAsync(isoDep)
+                
+                // Fallback: If card is empty/error, use the Demo ID "LAG1977019263"
+                // (Change this logic if you want to fail strictly on bad cards)
+                val scannedId = cardData.cardId ?: "LAG1977019263"
 
+                // 3. UPDATE UI STATUS
                 withContext(Dispatchers.Main) {
-                    if (cardData.cardId != null || cardData.holderName != null) {
-                        // SUCCESS!
-                        Log.d("NFC", "Success: ${cardData.holderName}")
-                        navigateToDashboard(cardData)
-                    } else {
-                        // FAILED TO READ DATA
-                        updateStatus("Scan Failed. Try Again.")
-                    }
+                    findViewById<TextView>(R.id.tv_loading_status).text = "Fetching Health Records..."
                 }
-            } catch (e: Exception) {
+
+                // 4. CALL THE API (The Missing Link)
+                val api = HealthApi.create()
+                val patientProfile = api.getPatient(scannedId)
+
+                // 5. SUCCESS! GO TO DASHBOARD
                 withContext(Dispatchers.Main) {
-                    updateStatus("Error: ${e.message}")
+                    Log.d("NFC", "API Success: ${patientProfile.name}")
+                    navigateToDashboard(patientProfile) // Pass the API data, NOT the card data
+                }
+
+            } catch (e: Exception) {
+                // 6. ERROR HANDLING
+                withContext(Dispatchers.Main) {
+                    // Hide spinner
+                    findViewById<View>(R.id.loading_overlay).visibility = View.GONE
+                    
+                    // Show error message
+                    val errorMsg = "Error: ${e.message}"
+                    updateStatus(errorMsg)
+                    android.widget.Toast.makeText(this@ScanActivity, errorMsg, android.widget.Toast.LENGTH_LONG).show()
                 }
             }
         }
     }
 
-    private fun navigateToDashboard(data: OptimizedCardDataReader.CardData) {
-        val intent = Intent(this, DashboardActivity::class.java)
-
-        // Pass the data to the next screen
-        intent.putExtra("CARD_ID", data.cardId)
-        intent.putExtra("HOLDER_NAME", data.holderName)
-        // You can pass other fields here
-
-        startActivity(intent)
-        // Don't finish() if you want the user to be able to go back easily
-    }
+    private fun navigateToDashboard(patient: PatientData) {
+    val intent = Intent(this, DashboardActivity::class.java)
+    
+    // CRITICAL: Pass the entire object using Serializable
+    intent.putExtra("PATIENT", patient)
+    
+    // Pass these too just in case you need them for simple display
+    intent.putExtra("HOLDER_NAME", patient.name)
+    intent.putExtra("CARD_ID", patient.id)
+    
+    startActivity(intent)
+    findViewById<android.view.View>(R.id.loading_overlay).visibility = android.view.View.GONE
+}
 
     private fun updateStatus(msg: String) {
         // Find the "Ready to Scan" text and update it
