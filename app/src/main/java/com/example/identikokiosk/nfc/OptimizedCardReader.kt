@@ -1,4 +1,4 @@
-package com.example.identikokiosk
+package com.example.identikokiosk.nfc
 
 import android.annotation.SuppressLint
 import android.nfc.tech.IsoDep

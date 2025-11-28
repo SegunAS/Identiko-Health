@@ -1,10 +1,12 @@
-package com.example.identikokiosk
+package com.example.identikokiosk.ui.details
 
 import android.graphics.Color
 import android.os.Bundle
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.example.identikokiosk.R
+import com.example.identikokiosk.data.model.PatientData
 
 class FamilyHealthActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,7 +31,7 @@ class FamilyHealthActivity : AppCompatActivity() {
         // 2. Organ Donor Status
         val statusText = findViewById<TextView>(R.id.tv_donor_status)
         val status = patient.organDonorStatus // "Yes" or "No"
-        
+
         if (status.equals("Yes", ignoreCase = true)) {
             statusText.text = "● Registered Donor"
             statusText.setTextColor(Color.parseColor("#10B981")) // Green
@@ -50,6 +52,13 @@ class FamilyHealthActivity : AppCompatActivity() {
     }
 
     private fun setupHeader(title: String, subtitle: String, colorRes: Int) {
+
+        val headerContainer = findViewById<LinearLayout>(R.id.header_container)
+
+        if (headerContainer == null) {
+            println("Critical Error : Header Container is not found in familyhealthectivity")
+            return
+        }
         findViewById<LinearLayout>(R.id.header_container).setBackgroundResource(colorRes)
         findViewById<TextView>(R.id.tv_header_title).text = title
         findViewById<TextView>(R.id.tv_header_subtitle).text = subtitle

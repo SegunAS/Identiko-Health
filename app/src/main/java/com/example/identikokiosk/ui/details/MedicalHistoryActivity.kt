@@ -1,10 +1,14 @@
-package com.example.identikokiosk
+package com.example.identikokiosk.ui.details
 
 import android.graphics.Color
+import android.graphics.Typeface
 import android.os.Bundle
+import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.example.identikokiosk.R
+import com.example.identikokiosk.data.model.PatientData
 
 class MedicalHistoryActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,7 +22,7 @@ class MedicalHistoryActivity : AppCompatActivity() {
 
         if (patient.surgeries.isNotEmpty()) {
             patient.surgeries.forEach { surgeryName ->
-                // Since our current JSON only has the name (e.g., "Appendectomy"), 
+                // Since our current JSON only has the name (e.g., "Appendectomy"),
                 // we display just that. If you update JSON to have dates, we can split string.
                 addItem(container, surgeryName)
             }
@@ -31,18 +35,18 @@ class MedicalHistoryActivity : AppCompatActivity() {
         val titleView = TextView(this).apply {
             text = title
             textSize = 20f // Big font for Kiosk
-            setTypeface(null, android.graphics.Typeface.BOLD)
+            setTypeface(null, Typeface.BOLD)
             setTextColor(Color.BLACK)
             setPadding(0, 0, 0, 8)
         }
-        
+
         // Add a Divider line
-        val divider = android.view.View(this).apply {
+        val divider = View(this).apply {
             layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 2)
             setBackgroundColor(Color.parseColor("#EEEEEE"))
             setPadding(0, 0, 0, 24)
         }
-        
+
         // Wrapper for spacing
         val wrapper = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL

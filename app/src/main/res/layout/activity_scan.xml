@@ -166,7 +166,7 @@
         android:clickable="true"
         android:focusable="true"
         android:visibility="gone"
-        android:elevation="20dp">
+        android:elevation="20dp" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -198,5 +198,6 @@
                 android:textSize="16sp"
                 android:layout_marginTop="8dp"/>
         </LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

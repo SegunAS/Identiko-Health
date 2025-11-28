@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.NFC"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <uses-feature android:name="android.hardware.nfc"
         android:required="true" />
@@ -15,12 +16,13 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.IdentikoKiosk">
+        android:theme="@style/Theme.IdentikoKiosk"
+        android:usesCleartextTraffic="true">
         <activity
             android:name=".MainActivity"
             android:exported="false"/>
             <activity
-            android:name=".ScanActivity"
+            android:name=".ui.scan.ScanActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,9 +31,9 @@
         </activity>
 
         <activity
-        android:name=".DashboardActivity"
+        android:name=".ui.dashboard.DashboardActivity"
         android:exported="true"
-        android:screenOrientation="portrait" />
+         />
 
         <activity android:name=".ui.details.BasicInfoActivity" android:screenOrientation="portrait"/>
     <activity android:name=".ui.details.MedicalProfileActivity" android:screenOrientation="portrait"/>

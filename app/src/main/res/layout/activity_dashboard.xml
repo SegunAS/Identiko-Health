@@ -59,12 +59,13 @@
                         android:textStyle="bold"/>
 
                     <TextView
+                        android:id="@+id/tv_patient_id"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="LAG-2024-8573 • Male • 45 years"
+                        android:layout_marginTop="4dp"
+                        android:text="LAG123456789• Male • 45 years"
                         android:textColor="#E0E0E0"
-                        android:textSize="16sp"
-                        android:layout_marginTop="4dp"/>
+                        android:textSize="16sp" />
                 </LinearLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -79,15 +80,15 @@
             android:textColor="#333"
             android:layout_marginBottom="16dp"/>
 
-        <include layout="@layout/item_dashboard_card" android:id="@+id/card_basic"/>
+        <include layout="@layout/item_dashboard_card" android:id="@+id/row_basic"/>
 
-        <include layout="@layout/item_dashboard_card" android:id="@+id/card_medical"/>
+        <include layout="@layout/item_dashboard_card" android:id="@+id/row_medical"/>
 
-        <include layout="@layout/item_dashboard_card" android:id="@+id/card_history"/>
+        <include layout="@layout/item_dashboard_card" android:id="@+id/row_history"/>
 
-        <include layout="@layout/item_dashboard_card" android:id="@+id/card_family"/>
+        <include layout="@layout/item_dashboard_card" android:id="@+id/row_family"/>
 
-        <include layout="@layout/item_dashboard_card" android:id="@+id/card_emergency"/>
+        <include layout="@layout/item_dashboard_card" android:id="@+id/row_emergency"/>
 
     </LinearLayout>
 </ScrollView>

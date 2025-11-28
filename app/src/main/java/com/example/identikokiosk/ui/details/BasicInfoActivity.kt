@@ -1,11 +1,14 @@
-package com.example.identikokiosk
+package com.example.identikokiosk.ui.details
 
 import android.graphics.Color
+import android.graphics.Typeface
 import android.os.Bundle
-import android.view.Gravity
+import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.example.identikokiosk.R
+import com.example.identikokiosk.data.model.PatientData
 
 class BasicInfoActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,7 +30,7 @@ class BasicInfoActivity : AppCompatActivity() {
         addRow(container, "Genotype", patient.genotype)
         addRow(container, "Sex", patient.sex)
         addRow(container, "Height", "${patient.height} cm")
-        
+
         // Handle List -> String
         val disab = if(patient.disabilities.isEmpty()) "None" else patient.disabilities.joinToString(", ")
         addRow(container, "Disabilities", disab)
@@ -53,16 +56,16 @@ class BasicInfoActivity : AppCompatActivity() {
             textSize = 18f
             setTextColor(if (isRed) Color.RED else Color.BLACK)
             textAlignment = TextView.TEXT_ALIGNMENT_VIEW_END
-            setTypeface(null, android.graphics.Typeface.BOLD)
+            setTypeface(null, Typeface.BOLD)
             layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
         }
 
         row.addView(labelView)
         row.addView(valueView)
         container.addView(row)
-        
+
         // Add divider line
-        val divider = android.view.View(this).apply {
+        val divider = View(this).apply {
             layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 2)
             setBackgroundColor(Color.parseColor("#EEEEEE"))
         }

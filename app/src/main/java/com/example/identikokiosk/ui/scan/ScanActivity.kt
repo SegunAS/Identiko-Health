@@ -1,4 +1,4 @@
-package com.example.identikokiosk
+package com.example.identikokiosk.ui.scan
 
 import android.content.Intent
 import android.nfc.NfcAdapter
@@ -12,6 +12,12 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.example.identikokiosk.MainActivity
+import com.example.identikokiosk.R
+import com.example.identikokiosk.data.api.HealthApi
+import com.example.identikokiosk.data.model.PatientData
+import com.example.identikokiosk.nfc.OptimizedCardDataReader
+import com.example.identikokiosk.ui.dashboard.DashboardActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -26,10 +32,10 @@ class ScanActivity : AppCompatActivity(), NfcAdapter.ReaderCallback {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_scan)
 
-        val scanButton = findViewById(R.id.btn_action_scan)
+        val scanButton: Button = findViewById(R.id.btn_action_scan)
 
         scanButton.setOnClickListener{
-            val intent = Intent(this, MainActivity::class.java)
+            val intent = Intent(this, com.example.identikokiosk.ui.dashboard.DashboardActivity::class.java)
 
             intent.putExtra("HOLDER_NAME", "Demo User")
             intent.putExtra("CARD_ID", "MANUAL-BYPASS-01")
@@ -115,18 +121,19 @@ class ScanActivity : AppCompatActivity(), NfcAdapter.ReaderCallback {
                 // 2. READ THE CARD ID
                 val reader = OptimizedCardDataReader()
                 val cardData = reader.readCardDataAsync(isoDep)
-                
+
                 // Fallback: If card is empty/error, use the Demo ID "LAG1977019263"
                 // (Change this logic if you want to fail strictly on bad cards)
-                val scannedId = cardData.cardId ?: "LAG1977019263"
+                val scannedId = cardData.cardId ?: "LAG123456789"
 
                 // 3. UPDATE UI STATUS
                 withContext(Dispatchers.Main) {
-                    findViewById<TextView>(R.id.tv_loading_status).text = "Fetching Health Records..."
+                    findViewById<TextView>(R.id.tv_loading_status).text =
+                        "Fetching Health Records..."
                 }
 
                 // 4. CALL THE API (The Missing Link)
-                val api = HealthApi.create()
+                val api = HealthApi.Companion.create()
                 val patientProfile = api.getPatient(scannedId)
 
                 // 5. SUCCESS! GO TO DASHBOARD
@@ -140,11 +147,11 @@ class ScanActivity : AppCompatActivity(), NfcAdapter.ReaderCallback {
                 withContext(Dispatchers.Main) {
                     // Hide spinner
                     findViewById<View>(R.id.loading_overlay).visibility = View.GONE
-                    
+
                     // Show error message
                     val errorMsg = "Error: ${e.message}"
                     updateStatus(errorMsg)
-                    android.widget.Toast.makeText(this@ScanActivity, errorMsg, android.widget.Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@ScanActivity, errorMsg, Toast.LENGTH_LONG).show()
                 }
             }
         }
@@ -152,16 +159,16 @@ class ScanActivity : AppCompatActivity(), NfcAdapter.ReaderCallback {
 
     private fun navigateToDashboard(patient: PatientData) {
     val intent = Intent(this, DashboardActivity::class.java)
-    
+
     // CRITICAL: Pass the entire object using Serializable
     intent.putExtra("PATIENT", patient)
-    
+
     // Pass these too just in case you need them for simple display
     intent.putExtra("HOLDER_NAME", patient.name)
     intent.putExtra("CARD_ID", patient.id)
-    
+
     startActivity(intent)
-    findViewById<android.view.View>(R.id.loading_overlay).visibility = android.view.View.GONE
+    findViewById<View>(R.id.loading_overlay).visibility = View.GONE
 }
 
     private fun updateStatus(msg: String) {

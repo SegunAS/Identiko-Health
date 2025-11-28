@@ -1,10 +1,10 @@
-package com.example.identikokiosk
+package com.example.identikokiosk.data.api
 
+import com.example.identikokiosk.data.model.PatientData
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Path
-
 interface HealthApi {
 
     @GET("{token}") // We pass "LAG1977019263" here
@@ -12,7 +12,7 @@ interface HealthApi {
 
     companion object {
         // NOTE: Ensure your K5 is on the same network as this IP!
-        private const val BASE_URL = "http://10.65.10.100:8080/"
+        private const val BASE_URL = "http://10.65.10.42:8080/"
 
         fun create(): HealthApi {
             return Retrofit.Builder()
