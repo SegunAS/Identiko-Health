@@ -97,65 +97,33 @@ class ScanActivity : AppCompatActivity(), NfcAdapter.ReaderCallback {
     }
 
     // 4. THIS IS THE MAGIC: When a card is tapped
-    override fun onTagDiscovered(tag: Tag?) {
-        if (tag == null) return
+  // Inside onTagDiscovered ...
 
-        // 1. SHOW SPINNER
-        runOnUiThread {
-            findViewById<View>(R.id.loading_overlay).visibility = View.VISIBLE
-            findViewById<TextView>(R.id.tv_loading_status).text = "Reading Secure Sector..."
-        }
+  override fun onTagDiscovered(tag: Tag?) {
+    if (tag == null) return
 
-        // Check for correct card type
-        val isoDep = IsoDep.get(tag)
-        if (isoDep == null) {
-            runOnUiThread {
-                findViewById<View>(R.id.loading_overlay).visibility = View.GONE
-                updateStatus("Error: Card type not supported")
-            }
-            return
-        }
+    // 1. We don't show overlay anymore. We launch the new Activity immediately.
+    val isoDep = IsoDep.get(tag)
+    if (isoDep == null) return
 
-        lifecycleScope.launch(Dispatchers.IO) {
-            try {
-                // 2. READ THE CARD ID
-                val reader = OptimizedCardDataReader()
-                val cardData = reader.readCardDataAsync(isoDep)
+    lifecycleScope.launch(Dispatchers.IO) {
+        try {
+            val reader = OptimizedCardDataReader()
+            val cardData = reader.readCardDataAsync(isoDep)
+            
+            // Get ID (or fallback)
+            val scannedId = cardData.cardId ?: "LAG1977019263"
 
-                // Fallback: If card is empty/error, use the Demo ID "LAG1977019263"
-                // (Change this logic if you want to fail strictly on bad cards)
-                val scannedId = cardData.cardId ?: "LAG123456789"
+            // 2. Launch Loading Screen
+            val intent = Intent(this@ScanActivity, LoadingActivity::class.java)
+            intent.putExtra("CARD_ID", scannedId)
+            startActivity(intent)
 
-                // 3. UPDATE UI STATUS
-                withContext(Dispatchers.Main) {
-                    findViewById<TextView>(R.id.tv_loading_status).text =
-                        "Fetching Health Records..."
-                }
-
-                // 4. CALL THE API (The Missing Link)
-                val api = HealthApi.Companion.create()
-                val patientProfile = api.getPatient(scannedId)
-
-                // 5. SUCCESS! GO TO DASHBOARD
-                withContext(Dispatchers.Main) {
-                    Log.d("NFC", "API Success: ${patientProfile.name}")
-                    navigateToDashboard(patientProfile) // Pass the API data, NOT the card data
-                }
-
-            } catch (e: Exception) {
-                // 6. ERROR HANDLING
-                withContext(Dispatchers.Main) {
-                    // Hide spinner
-                    findViewById<View>(R.id.loading_overlay).visibility = View.GONE
-
-                    // Show error message
-                    val errorMsg = "Error: ${e.message}"
-                    updateStatus(errorMsg)
-                    Toast.makeText(this@ScanActivity, errorMsg, Toast.LENGTH_LONG).show()
-                }
-            }
+        } catch (e: Exception) {
+            // Handle read error (maybe show Toast on UI thread)
         }
     }
+}
 
     private fun navigateToDashboard(patient: PatientData) {
     val intent = Intent(this, DashboardActivity::class.java)

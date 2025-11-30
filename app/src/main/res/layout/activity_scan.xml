@@ -1,23 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.constraintlayout.widget.ConstraintLayout 
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_main_gradient"
+    android:background="@drawable/bg_gradient_main"
     android:padding="24dp">
 
     <ImageView
-        android:id="@+id/icon_heart"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:src="@drawable/ic_launcher_foreground"
-        android:background="@drawable/bg_glass_box"
+        android:id="@+id/img_logo_bg"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@drawable/bg_glass_rounded"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:padding="10dp"
+        android:src="@android:drawable/stat_sys_data_bluetooth" 
+        app:tint="@color/white"/>
 
     <TextView
-        android:id="@+id/tv_scan_title"
+        android:id="@+id/tv_app_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Identiko Health"
@@ -25,8 +27,8 @@
         android:textSize="20sp"
         android:textStyle="bold"
         android:layout_marginStart="12dp"
-        app:layout_constraintStart_toEndOf="@id/icon_heart"
-        app:layout_constraintTop_toTopOf="@id/icon_heart" />
+        app:layout_constraintStart_toEndOf="@id/img_logo_bg"
+        app:layout_constraintTop_toTopOf="@id/img_logo_bg" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -34,36 +36,33 @@
         android:text="Smart Scanner"
         android:textColor="#CCFFFFFF"
         android:textSize="14sp"
-        android:layout_marginStart="12dp"
-        app:layout_constraintStart_toEndOf="@id/icon_heart"
-        app:layout_constraintTop_toBottomOf="@+id/icon_heart"
-        android:layout_marginTop="-15dp"
-        android:translationY="15dp"/>
+        app:layout_constraintStart_toStartOf="@id/tv_app_name"
+        app:layout_constraintTop_toBottomOf="@id/tv_app_name" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="● Ready"
         android:textColor="@color/white"
-        android:background="@drawable/bg_glass_box"
-        android:paddingHorizontal="12dp"
-        android:paddingVertical="6dp"
+        android:background="@drawable/bg_glass_rounded"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="8dp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
-        android:id="@+id/tv_title"
+        android:id="@+id/tv_scan_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Ready to Scan"
         android:textColor="@color/white"
         android:textSize="32sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="40dp"
+        app:layout_constraintBottom_toTopOf="@id/view_pulse_outer"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.25" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -74,130 +73,40 @@
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_title" />
+        app:layout_constraintTop_toBottomOf="@id/tv_scan_title" />
 
     <View
-        android:id="@+id/circle_bg"
-        android:layout_width="250dp"
-        android:layout_height="250dp"
-        android:background="@drawable/bg_glass_box"
-        android:backgroundTint="#20FFFFFF"
+        android:id="@+id/view_pulse_outer"
+        android:layout_width="260dp"
+        android:layout_height="260dp"
+        android:background="@drawable/bg_glass_rounded"
+        android:backgroundTint="#15FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.55"/>
+    
     <ImageView
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
         android:src="@android:drawable/stat_sys_data_bluetooth"
         app:tint="@color/white"
-        app:layout_constraintBottom_toBottomOf="@id/circle_bg"
-        app:layout_constraintEnd_toEndOf="@id/circle_bg"
-        app:layout_constraintStart_toStartOf="@id/circle_bg"
-        app:layout_constraintTop_toTopOf="@id/circle_bg" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="NFC READY"
-        android:textColor="@color/white"
-        android:layout_marginTop="16dp"
-        app:layout_constraintStart_toStartOf="@id/circle_bg"
-        app:layout_constraintEnd_toEndOf="@id/circle_bg"
-        app:layout_constraintTop_toBottomOf="@id/circle_bg"
-        android:translationY="-60dp"/>
-
-    <LinearLayout
-        android:id="@+id/layout_status"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginBottom="24dp"
-        app:layout_constraintBottom_toTopOf="@+id/btn_scan">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="80dp"
-            android:layout_weight="1"
-            android:background="@drawable/bg_glass_box"
-            android:gravity="center"
-            android:text="Secure"
-            android:textColor="@color/white"
-            android:layout_marginEnd="8dp"/>
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="80dp"
-            android:layout_weight="1"
-            android:background="@drawable/bg_glass_box"
-            android:gravity="center"
-            android:text="NFC Active"
-            android:textColor="@color/white"
-            android:layout_marginEnd="8dp"/>
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="80dp"
-            android:layout_weight="1"
-            android:background="@drawable/bg_glass_box"
-            android:gravity="center"
-            android:text="HIPAA"
-            android:textColor="@color/white"/>
-    </LinearLayout>
+        app:layout_constraintBottom_toBottomOf="@id/view_pulse_outer"
+        app:layout_constraintEnd_toEndOf="@id/view_pulse_outer"
+        app:layout_constraintStart_toStartOf="@id/view_pulse_outer"
+        app:layout_constraintTop_toTopOf="@id/view_pulse_outer"/>
 
     <Button
         android:id="@+id/btn_action_scan"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_height="72dp"
         android:text="TAP TO SCAN"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:textColor="@color/brand_blue"
+        android:textColor="#2563EB"
         android:backgroundTint="@color/white"
-        app:cornerRadius="35dp"
+        app:cornerRadius="16dp"
         app:layout_constraintBottom_toBottomOf="parent" />
-
-    <FrameLayout 
-        android:id="@+id/loading_overlay"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#D9000000" 
-        android:clickable="true"
-        android:focusable="true"
-        android:visibility="gone"
-        android:elevation="20dp" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="vertical"
-            android:gravity="center">
-
-            <ProgressBar
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:indeterminateTint="@color/brand_blue"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Authenticating..."
-                android:textColor="#FFFFFF"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                android:layout_marginTop="16dp"/>
-                
-            <TextView
-                android:id="@+id/tv_loading_status"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Reading Secure Sector..."
-                android:textColor="#CCCCCC"
-                android:textSize="16sp"
-                android:layout_marginTop="8dp"/>
-        </LinearLayout>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -40,6 +40,7 @@
     <activity android:name=".ui.details.MedicalHistoryActivity" android:screenOrientation="portrait"/>
     <activity android:name=".ui.details.FamilyHealthActivity" android:screenOrientation="portrait"/>
     <activity android:name=".ui.details.EmergencyActivity" android:screenOrientation="portrait"/>
+    <activity android:name=".ui.scan.LoadingActivity" android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

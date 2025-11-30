@@ -55,10 +55,10 @@ class DashboardActivity : AppCompatActivity() {
         // 3. SETUP CARDS WITH NAVIGATION
         // We pass the Target Activity Class for each card
         setupCard(R.id.row_basic, "Basic Information", "Patient's essential details", R.color.card_blue, BasicInfoActivity::class.java)
-        setupCard(R.id.row_medical, "Medical Profile", "Current health snapshot", R.color.card_red, MedicalProfileActivity::class.java)
-        setupCard(R.id.row_history, "Medical History", "Past conditions & treatments", R.color.card_purple, MedicalHistoryActivity::class.java)
-        setupCard(R.id.row_family, "Family Health", "Genetic factors", R.color.card_green, FamilyHealthActivity::class.java)
-        // setupCard(R.id.card_emergency, "Emergency & Insurance", "Critical contact info", R.color.card_orange, EmergencyActivity::class.java)
+        setupCard(R.id.row_medical, "Medical Profile", "Current health snapshot", R.color.card_blue, MedicalProfileActivity::class.java)
+        setupCard(R.id.row_history, "Medical History", "Past conditions & treatments", R.color.card_blue, MedicalHistoryActivity::class.java)
+        setupCard(R.id.row_family, "Family Health", "Genetic factors", R.color.card_blue, FamilyHealthActivity::class.java)
+        //setupCard(R.id.card_emergency, "Emergency & Insurance", "Critical contact info", R.color.card_blue, EmergencyActivity::class.java)
     }
 
     private fun setupCard(includeId: Int, title: String, subtitle: String, colorResId: Int, targetActivity: Class<*>) {
