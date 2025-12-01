@@ -30,13 +30,21 @@ class BasicInfoActivity : AppCompatActivity() {
         addRow(container, "Genotype", patient.genotype)
         addRow(container, "Sex", patient.sex)
         addRow(container, "Height", "${patient.height} cm")
+        addRow(container, "HMO / Insurance", patient.insurance)
+        addRow(container, "Policy Number", patient.insuranceId)
 
-        // Handle List -> String
-        val disab = if(patient.disabilities.isEmpty()) "None" else patient.disabilities.joinToString(", ")
-        addRow(container, "Disabilities", disab)
+        val rawStatus = patient.organDonorStatus ?: "No"
+        val isDonor = rawStatus.equals("Yes", ignoreCase = true) || rawStatus.equals("true", ignoreCase = true)
+
+        // 2. Set nice text and color
+        val donorText = if (isDonor) "Registered Donor" else "Not Registered"
+        val donorColor = if (isDonor) android.graphics.Color.parseColor("#10B981") else android.graphics.Color.BLACK
+
+        // 3. Add the row
+        addRow(container, "Organ Donor", donorText, customColor=donorColor)
     }
 
-    private fun addRow(container: LinearLayout, label: String, value: String?, isRed: Boolean = false) {
+    private fun addRow(container: LinearLayout, label: String, value: String?, isRed: Boolean = false, customColor: Int? = null) {
         if (value.isNullOrEmpty()) return // RULE: Do not add if empty
 
         val row = LinearLayout(this).apply {
@@ -74,33 +82,18 @@ class BasicInfoActivity : AppCompatActivity() {
 
     // PASTE THIS INTO ALL 5 DETAIL ACTIVITIES
     private fun setupHeader(title: String, subtitle: String, colorRes: Int) {
-        // 1. Try finding by the "Include" ID (If you kept android:id="@+id/header" in XML)
-        var headerView = findViewById<LinearLayout>(R.id.header)
+        // FIX: Use 'header_container' directly. Do NOT use 'R.id.header' anymore.
+        val headerView = findViewById<LinearLayout>(R.id.header_container)
 
-        // 2. If null, try finding by the "Original" ID (If you removed the ID from XML)
-        if (headerView == null) {
-            headerView = findViewById(R.id.header_container)
-        }
-
-        // 3. If BOTH are null, the layout is broken. Log it, but DO NOT CRASH.
-        if (headerView == null) {
-            android.util.Log.e("Identiko", "CRITICAL: Header view not found. Check XML.")
-            return // Exit function safely
-        }
-
-        // 4. Safe to set properties
-        try {
+        if (headerView != null) {
             headerView.setBackgroundResource(colorRes)
-            
-            // Use safe calls (?.) just in case
             headerView.findViewById<TextView>(R.id.tv_header_title)?.text = title
             headerView.findViewById<TextView>(R.id.tv_header_subtitle)?.text = subtitle
-            
-            headerView.findViewById<LinearLayout>(R.id.btn_back)?.setOnClickListener { 
-                finish() 
+            headerView.findViewById<LinearLayout>(R.id.btn_back)?.setOnClickListener {
+                finish()
             }
-        } catch (e: Exception) {
-            android.util.Log.e("Identiko", "Error setting header data: ${e.message}")
-        }
-    }
-}
+        } else {
+            // Log it so you know if something goes wrong, but don't crash
+            android.util.Log.e("Identiko", "Header View not found in BasicInfoActivity")
+            }
+}}

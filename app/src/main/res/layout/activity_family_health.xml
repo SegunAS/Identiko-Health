@@ -6,10 +6,17 @@
     android:orientation="vertical"
     android:background="#F5F7FA">
 
-    <include layout="@layout/include_details_header" />
+    <include layout="@layout/include_detail_header"/>
 
-    <ScrollView android:layout_width="match_parent" android:layout_height="match_parent" android:padding="24dp">
-        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="24dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
@@ -17,43 +24,21 @@
                 app:cardCornerRadius="16dp"
                 app:cardElevation="2dp"
                 app:contentPadding="24dp">
-                
+
                 <LinearLayout
                     android:id="@+id/family_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
-                    
+
                     <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:text="Family Health Issues"
                         android:textSize="18sp"
-                        android:textColor="#666"
+                        android:textColor="#666666"
                         android:layout_marginBottom="12dp"/>
-                    
-                    </LinearLayout>
-            </androidx.cardview.widget.CardView>
 
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="2dp"
-                app:contentPadding="24dp">
-                
-                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
-                    <TextView
-                        android:text="Organ Donor Status"
-                        android:textSize="18sp"
-                        android:textColor="#666"/>
-                    
-                    <TextView
-                        android:id="@+id/tv_donor_status"
-                        android:layout_marginTop="8dp"
-                        android:text="● Registered Donor"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        android:textColor="#10B981"/>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 

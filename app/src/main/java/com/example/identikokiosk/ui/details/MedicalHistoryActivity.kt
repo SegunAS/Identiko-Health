@@ -1,9 +1,7 @@
 package com.example.identikokiosk.ui.details
 
 import android.graphics.Color
-import android.graphics.Typeface
 import android.os.Bundle
-import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -15,39 +13,48 @@ class MedicalHistoryActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_medical_history)
 
-        setupHeader("Medical History", "Past conditions & treatments", R.color.card_purple)
+        setupHeader("Medical History", "Past conditions & treatments", R.color.card_blue)
 
         val patient = intent.getSerializableExtra("PATIENT") as? PatientData ?: return
-        val container = findViewById<LinearLayout>(R.id.surgeries_container)
+
+        // 1. POPULATE MEDICATIONS (New)
+        val medsContainer = findViewById<LinearLayout>(R.id.medications_container)
+
+        if (patient.medications.isNotEmpty()) {
+            patient.medications.forEach { med ->
+                addItem(medsContainer, med)
+            }
+        } else {
+            addItem(medsContainer, "No active medications")
+        }
+
+        // 2. POPULATE SURGERIES (Existing)
+        val surgeryContainer = findViewById<LinearLayout>(R.id.surgeries_container)
 
         if (patient.surgeries.isNotEmpty()) {
             patient.surgeries.forEach { surgeryName ->
-                // Since our current JSON only has the name (e.g., "Appendectomy"),
-                // we display just that. If you update JSON to have dates, we can split string.
-                addItem(container, surgeryName)
+                addItem(surgeryContainer, surgeryName)
             }
         } else {
-            addItem(container, "No recorded surgeries")
+            addItem(surgeryContainer, "No recorded surgeries")
         }
     }
 
+    // Helper to add rows nicely
     private fun addItem(container: LinearLayout, title: String) {
         val titleView = TextView(this).apply {
             text = title
-            textSize = 20f // Big font for Kiosk
-            setTypeface(null, Typeface.BOLD)
+            textSize = 20f
+            setTypeface(null, android.graphics.Typeface.BOLD)
             setTextColor(Color.BLACK)
             setPadding(0, 0, 0, 8)
         }
 
-        // Add a Divider line
-        val divider = View(this).apply {
+        val divider = android.view.View(this).apply {
             layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 2)
             setBackgroundColor(Color.parseColor("#EEEEEE"))
-            setPadding(0, 0, 0, 24)
         }
 
-        // Wrapper for spacing
         val wrapper = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             setPadding(0, 16, 0, 16)
@@ -58,35 +65,23 @@ class MedicalHistoryActivity : AppCompatActivity() {
         container.addView(wrapper)
     }
 
-    // PASTE THIS INTO ALL 5 DETAIL ACTIVITIES
+    // The Safe Header Function
     private fun setupHeader(title: String, subtitle: String, colorRes: Int) {
-        // 1. Try finding by the "Include" ID (If you kept android:id="@+id/header" in XML)
-        var headerView = findViewById<LinearLayout>(R.id.header)
+        var headerView = findViewById<LinearLayout>(R.id.header_container)
 
-        // 2. If null, try finding by the "Original" ID (If you removed the ID from XML)
         if (headerView == null) {
             headerView = findViewById(R.id.header_container)
         }
 
-        // 3. If BOTH are null, the layout is broken. Log it, but DO NOT CRASH.
-        if (headerView == null) {
-            android.util.Log.e("Identiko", "CRITICAL: Header view not found. Check XML.")
-            return // Exit function safely
-        }
-
-        // 4. Safe to set properties
-        try {
+        if (headerView != null) {
             headerView.setBackgroundResource(colorRes)
-            
-            // Use safe calls (?.) just in case
             headerView.findViewById<TextView>(R.id.tv_header_title)?.text = title
             headerView.findViewById<TextView>(R.id.tv_header_subtitle)?.text = subtitle
-            
-            headerView.findViewById<LinearLayout>(R.id.btn_back)?.setOnClickListener { 
-                finish() 
+            headerView.findViewById<LinearLayout>(R.id.btn_back)?.setOnClickListener {
+                finish()
             }
-        } catch (e: Exception) {
-            android.util.Log.e("Identiko", "Error setting header data: ${e.message}")
+        } else {
+            android.util.Log.e("Identiko", "Header not found in MedicalHistory")
+            }
         }
-    }
 }

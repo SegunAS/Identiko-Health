@@ -17,14 +17,7 @@
         android:padding="20dp"
         android:orientation="horizontal">
 
-        <ImageView
-            android:id="@+id/img_icon"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="#20FFFFFF"
-            android:padding="10dp"
-            android:src="@android:drawable/ic_menu_info_details"
-            app:tint="@color/white"/>
+
 
         <LinearLayout
             android:id="@+id/layout_card_bg"

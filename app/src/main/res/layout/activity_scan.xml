@@ -15,41 +15,43 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:padding="10dp"
-        android:src="@android:drawable/stat_sys_data_bluetooth" 
+        android:src="@drawable/identico"
         app:tint="@color/white"/>
+
+    <!--    <TextView-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Smart Scanner"-->
+<!--        android:textColor="#CCFFFFFF"-->
+<!--        android:textSize="14sp"-->
+<!--        app:layout_constraintStart_toStartOf="@id/tv_app_name"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/tv_app_name" />-->
+
+<!--NOTE: Not needed-->
+<!--    <TextView-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="● Ready"-->
+<!--        android:textColor="@color/white"-->
+<!--        android:background="@drawable/bg_glass_rounded"-->
+<!--        android:paddingHorizontal="16dp"-->
+<!--        android:paddingVertical="8dp"-->
+<!--        android:textStyle="bold"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"/>-->
 
     <TextView
         android:id="@+id/tv_app_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Identiko Health"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="8dp"
+        android:text="ID + H"
         android:textColor="@color/white"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:layout_marginStart="12dp"
         app:layout_constraintStart_toEndOf="@id/img_logo_bg"
         app:layout_constraintTop_toTopOf="@id/img_logo_bg" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Smart Scanner"
-        android:textColor="#CCFFFFFF"
-        android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="@id/tv_app_name"
-        app:layout_constraintTop_toBottomOf="@id/tv_app_name" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="● Ready"
-        android:textColor="@color/white"
-        android:background="@drawable/bg_glass_rounded"
-        android:paddingHorizontal="16dp"
-        android:paddingVertical="8dp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
         android:id="@+id/tv_scan_title"
@@ -88,25 +90,25 @@
         app:layout_constraintVertical_bias="0.55"/>
     
     <ImageView
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:src="@android:drawable/stat_sys_data_bluetooth"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:src="@drawable/nfc"
         app:tint="@color/white"
         app:layout_constraintBottom_toBottomOf="@id/view_pulse_outer"
         app:layout_constraintEnd_toEndOf="@id/view_pulse_outer"
         app:layout_constraintStart_toStartOf="@id/view_pulse_outer"
         app:layout_constraintTop_toTopOf="@id/view_pulse_outer"/>
 
-    <Button
-        android:id="@+id/btn_action_scan"
-        android:layout_width="match_parent"
-        android:layout_height="72dp"
-        android:text="TAP TO SCAN"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:textColor="#2563EB"
-        android:backgroundTint="@color/white"
-        app:cornerRadius="16dp"
-        app:layout_constraintBottom_toBottomOf="parent" />
+<!--    <Button-->
+<!--        android:id="@+id/btn_action_scan"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="72dp"-->
+<!--        android:text="TAP TO SCAN"-->
+<!--        android:textSize="20sp"-->
+<!--        android:textStyle="bold"-->
+<!--        android:textColor="#2563EB"-->
+<!--        android:backgroundTint="@color/white"-->
+<!--        app:cornerRadius="16dp"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

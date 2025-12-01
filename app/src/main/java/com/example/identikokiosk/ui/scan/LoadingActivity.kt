@@ -2,6 +2,8 @@ package com.example.identikokiosk.ui.scan // Place in 'scan' or 'ui' package
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -31,7 +33,7 @@ class LoadingActivity : AppCompatActivity() {
         lifecycleScope.launch(Dispatchers.IO) {
             try {
                 // Optional: Fake delay so user sees the "Loading" animation (UX)
-                delay(1500) 
+                // delay(1500)
 
                 // A. Call API
                 val api = HealthApi.create()
@@ -41,18 +43,36 @@ class LoadingActivity : AppCompatActivity() {
                 withContext(Dispatchers.Main) {
                     val intent = Intent(this@LoadingActivity, DashboardActivity::class.java)
                     intent.putExtra("PATIENT", patient)
+
+                    intent.putExtra("SCANNED_CARD_ID", cardId)
+
                     startActivity(intent)
                     finish() // Close loading screen so Back button goes to Scanner, not Loading
                 }
             } catch (e: Exception) {
                 // C. Error -> Go back to Scanner
+
+                lifecycleScope.launch(Dispatchers.IO) {
+                    // --- Do your background work here (e.g., network call) ---
+
+                    // Now, switch to the main thread to update the UI
+                    withContext(Dispatchers.Main) {
+                        val loader = findViewById<ProgressBar>(R.id.loader)
+                        loader.visibility = View.GONE
+                    }
+                }
                 withContext(Dispatchers.Main) {
                     val statusText = findViewById<TextView>(R.id.tv_status)
-                    statusText.text = "Error: ${e.message}"
-                    statusText.setTextColor(android.graphics.Color.RED)
-                    
+                    // check if error is 404
+                    if (e is retrofit2.HttpException && e.code() == 404) {
+                        statusText.text = "Patient not found"
+                        statusText.setTextColor(android.graphics.Color.RED)
+                    } else {
+                        statusText.text = "Something went wrong whilst retrieving patient information"
+                        statusText.setTextColor(android.graphics.Color.RED)
+                    }
                     // Wait 2 seconds so user sees error, then close
-                    delay(2000)
+                    delay(1500)
                     finish()
                 }
             }

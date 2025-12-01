@@ -1,39 +1,50 @@
 package com.example.identikokiosk.ui.details
 
-
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity // <-- Import this
+import androidx.appcompat.app.AppCompatActivity
 import com.example.identikokiosk.R
 import com.example.identikokiosk.data.model.PatientData
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
+
 class MedicalProfileActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_medical_profile)
 
-        setupHeader("Medical Profile", "Current health snapshot", R.color.card_red) // Red/Pink
+        setupHeader("Medical Profile", "Current health snapshot", R.color.card_blue)
+
         val patient = intent.getSerializableExtra("PATIENT") as? PatientData ?: return
 
-        // 1. Underlying Conditions (Blue Pills)
+        // 1. Underlying Health Conditions (Blue Chips)
         val conditionGroup = findViewById<ChipGroup>(R.id.chip_group_conditions)
+
         if (patient.personalHistory.isNotEmpty()) {
-            patient.personalHistory.forEach { addChip(conditionGroup, it, "#E3F2FD", "#1565C0") } // Light Blue bg, Dark Blue text
+            // Add real data (Light Blue bg, Dark Blue text)
+            patient.personalHistory.forEach {
+                addChip(conditionGroup, it, "#E3F2FD", "#1565C0")
+            }
         } else {
-             findViewById<View>(R.id.card_conditions).visibility = View.GONE
+            // Add "None" (Gray bg, Gray text)
+            addChip(conditionGroup, "None", "#F5F5F5", "#757575")
         }
 
-        // 2. Allergies (Red/Pink Pills)
+        // 2. Known Allergies (Red Chips)
         val allergyGroup = findViewById<ChipGroup>(R.id.chip_group_allergies)
+
         if (patient.allergies.isNotEmpty()) {
-            patient.allergies.forEach { addChip(allergyGroup, it, "#FFEBEE", "#C62828") } // Light Red bg, Dark Red text
+            // Add real data (Light Red bg, Dark Red text)
+            patient.allergies.forEach {
+                addChip(allergyGroup, it, "#FFEBEE", "#C62828")
+            }
         } else {
-             findViewById<View>(R.id.card_allergies).visibility = View.GONE
+            // Add "None" (Gray bg, Gray text)
+            addChip(allergyGroup, "None", "#F5F5F5", "#757575")
         }
     }
 
@@ -42,40 +53,32 @@ class MedicalProfileActivity : AppCompatActivity() {
             this.text = text
             setChipBackgroundColor(ColorStateList.valueOf(Color.parseColor(bgColor)))
             setTextColor(Color.parseColor(textColor))
-            textSize = 16f
-            ensureAccessibleTouchTarget(50) // Make it nice and big for Kiosk
+            textSize = 18f // Nice and big for Kiosk
+            minHeight = 120 // Taller touch target
+            ensureAccessibleTouchTarget(60)
+            isClickable = false // Just for display
         }
         group.addView(chip)
     }
-    // PASTE THIS INTO ALL 5 DETAIL ACTIVITIES
-    private fun setupHeader(title: String, subtitle: String, colorRes: Int) {
-        // 1. Try finding by the "Include" ID (If you kept android:id="@+id/header" in XML)
-        var headerView = findViewById<LinearLayout>(R.id.header)
 
-        // 2. If null, try finding by the "Original" ID (If you removed the ID from XML)
+    // The Safe Header Function (Crash-Proof)
+    private fun setupHeader(title: String, subtitle: String, colorRes: Int) {
+        var headerView = findViewById<LinearLayout>(R.id.header_container)
+
+        // Fallback for ID mismatch
         if (headerView == null) {
             headerView = findViewById(R.id.header_container)
         }
 
-        // 3. If BOTH are null, the layout is broken. Log it, but DO NOT CRASH.
-        if (headerView == null) {
-            android.util.Log.e("Identiko", "CRITICAL: Header view not found. Check XML.")
-            return // Exit function safely
-        }
-
-        // 4. Safe to set properties
-        try {
+        if (headerView != null) {
             headerView.setBackgroundResource(colorRes)
-
-            // Use safe calls (?.) just in case
             headerView.findViewById<TextView>(R.id.tv_header_title)?.text = title
             headerView.findViewById<TextView>(R.id.tv_header_subtitle)?.text = subtitle
-
             headerView.findViewById<LinearLayout>(R.id.btn_back)?.setOnClickListener {
                 finish()
             }
-        } catch (e: Exception) {
-            android.util.Log.e("Identiko", "Error setting header data: ${e.message}")
+        } else {
+            android.util.Log.e("Identiko", "CRITICAL: Header not found in MedicalProfile")
             }
         }
 }

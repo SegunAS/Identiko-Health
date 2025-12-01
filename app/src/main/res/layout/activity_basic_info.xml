@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:background="#F5F7FA">
 
-    <include layout="@layout/include_details_header" />
+    <include layout="@layout/include_detail_header" />
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"

@@ -34,6 +34,15 @@ data class PatientData(
 
     val insurance: String,
 
+    @SerializedName("insurance_id")
+    val insuranceId: String,
+
+    @SerializedName("emergency_name")
+    val emergencyName: String,
+
+    @SerializedName("emergency_relationship")
+    val emergencyRelationship: String,
+
     @SerializedName("emergency_contact")
     val emergencyContact: String
 ) : Serializable

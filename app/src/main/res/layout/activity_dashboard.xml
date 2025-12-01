@@ -15,7 +15,7 @@
             android:id="@+id/btn_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=" Back to Scanner"
+            android:text=" Back"
             android:textColor="@color/brand_blue"
             android:textSize="18sp"
             android:textStyle="bold"
@@ -35,14 +35,6 @@
                 android:padding="24dp"
                 android:orientation="horizontal"
                 android:gravity="center_vertical">
-
-                <ImageView
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:src="@android:drawable/sym_def_app_icon"
-                    android:background="@drawable/bg_glass_box"
-                    android:padding="16dp"/>
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -63,7 +55,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:text="LAG123456789• Male • 45 years"
                         android:textColor="#E0E0E0"
                         android:textSize="16sp" />
                 </LinearLayout>
@@ -74,7 +65,7 @@
             android:id="@+id/tv_patient_details"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Patient Information"
+            android:text="Information"
             android:textSize="22sp"
             android:textStyle="bold"
             android:textColor="#333"

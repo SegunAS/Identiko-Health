@@ -12,8 +12,8 @@ interface HealthApi {
 
     companion object {
         // NOTE: Ensure your K5 is on the same network as this IP!
-        private const val BASE_URL = "http://10.65.10.42:8080/"
-
+        private const val BASE_URL = "https://test-demo-scanner.onrender.com/"
+        //https://test-demo-scanner.onrender.com
         fun create(): HealthApi {
             return Retrofit.Builder()
                 .baseUrl(BASE_URL)
